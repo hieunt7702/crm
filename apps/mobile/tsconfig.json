@@ -1,0 +1,26 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "core-api": [
+        "../../packages/core/api.ts"
+      ],
+      "core-model": [
+        "../../packages/core/model.ts"
+      ],
+      "core-store": [
+        "../../packages/core/store.ts"
+      ],
+      "core-context": [
+        "../../packages/core/context.ts"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
+}

@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* Enable dark mode with class strategy */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Custom Colors */
+    --color-primary: #00ccaa;
+    --color-background-light: #fafafa;
+    --color-background-dark: #1a1d23;
+    --color-surface-dark: #23272e;
+    --color-border-dark: #2e343d;
+    --color-card-dark: #242830;
+    --color-panel-dark: #242830;
+    --color-accent-red: #ff5c5c;
+
+    /* Font Family */
+    --font-family-display: "Space Grotesk", sans-serif;
+
+    /* Border Radius */
+    --radius: 0.25rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
+    --radius-3xl: 1.5rem;
+}
+
+/* Global Styles */
+body {
+    font-family: "Space Grotesk", sans-serif;
+}
+
+/* Material Symbols Icon Fixes */
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+/* Custom Classes */
+.glow-effect {
+    box-shadow: 0 0 20px rgba(0, 204, 170, 0.15);
+}
+
+.hero-gradient {
+    background: radial-gradient(circle at 50% 50%, rgba(0, 204, 170, 0.08) 0%, transparent 70%);
+}
+
+/* How It Works Page Styles */
+.timeline-gradient {
+    background: linear-gradient(180deg, #00ccaa 0%, rgba(0, 204, 170, 0.1) 100%);
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fee-card-highlight {
+    border: 1px solid rgba(0, 204, 170, 0.3);
+    background: linear-gradient(145deg, rgba(0, 204, 170, 0.05) 0%, rgba(26, 29, 35, 0) 100%);
+}
+
+.glow-border:hover {
+    border-color: rgba(0, 204, 170, 0.5);
+    box-shadow: 0 0 20px rgba(0, 204, 170, 0.1);
+}
+
+.step-number {
+    -webkit-text-stroke: 1px rgba(0, 204, 170, 0.3);
+    color: transparent;
+}
+
+/* Trust & Safety Page Styles */
+.security-glow {
+    box-shadow: 0 0 20px rgba(0, 204, 170, 0.15);
+}
+
+.bento-card {
+    transition: all 0.3s ease;
+}
+
+.bento-card:hover {
+    border-color: #00ccaa;
+    background-color: rgba(0, 204, 170, 0.02);
+}
+
+/* Exchange Status Page Styles */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #204b44;
+    border-radius: 10px;
+}
+
+.glow-active {
+    box-shadow: 0 0 15px rgba(0, 204, 170, 0.3);
+}
+
+/* Start Exchange Page Styles */
+.form-input:focus {
+    box-shadow: 0 0 0 2px rgba(0, 204, 170, 0.2);
+}
+
+/* Mediator Panel Styles */
+.halo-glow {
+    box-shadow: 0 0 15px rgba(0, 204, 170, 0.1);
+}

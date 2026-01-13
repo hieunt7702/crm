@@ -1,0 +1,14 @@
+{
+    "name": "@app/core",
+    "version": "1.0.0",
+    "type": "module",
+    "exports": {
+        ".": "./index.ts",
+        "./api": "./api.ts",
+        "./model": "./model.ts",
+        "./service": "./service.ts",
+        "./store": "./store.ts",
+        "./context": "./context.ts",
+        "./utils": "./utils.ts"
+    }
+}

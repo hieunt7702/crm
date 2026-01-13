@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "declaration": true,
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "baseUrl": "."
+    },
+    "include": [
+        "./**/*.ts",
+        "./**/*.tsx"
+    ]
+}
