@@ -1,14 +1,22 @@
 {
   "name": "my-monorepo",
   "private": true,
+  "//workspaces": "Định nghĩa các thư mục con chứa các app và package của monorepo",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
+  "//scripts": "Các lệnh điều khiển toàn bộ dự án từ thư mục gốc",
+  "scripts": {
+    "dev": "npm run dev --workspace=@app/web", 
+    "build": "npm run build --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present"
+  },
   "dependencies": {
     "axios": "^1.13.2",
     "mobx": "^6.15.0",
     "mobx-react-lite": "^4.1.1",
-    "react": "^18.3.1"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   }
 }

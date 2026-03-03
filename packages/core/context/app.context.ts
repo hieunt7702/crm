@@ -1,5 +1,6 @@
-// core/context/app.context.ts
-import { createContext } from "react"
-import { RootStore } from "../stores/root.store"
+import { AppConfig } from './app.config';
 
-export const AppContext = createContext<RootStore | null>(null)
+export interface IAppContext {
+    config: AppConfig;
+}
+

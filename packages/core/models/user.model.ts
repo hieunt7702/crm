@@ -1,6 +1,6 @@
-// core/models/user.model.ts
-export interface User {
-    id: string
-    email: string
-    name: string
+export interface UserModel {
+    id: number;
+    name: string;
+    email: string;
+    avatar?: string;
 }

@@ -4,116 +4,189 @@
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-    /* Custom Colors */
-    --color-primary: #00ccaa;
-    --color-background-light: #fafafa;
-    --color-background-dark: #1a1d23;
-    --color-surface-dark: #23272e;
-    --color-border-dark: #2e343d;
-    --color-card-dark: #242830;
-    --color-panel-dark: #242830;
-    --color-accent-red: #ff5c5c;
+    /* Linear CRM Refined Palette */
+    --color-primary-50: #f4f5fb;
+    --color-primary-100: #e9ebf7;
+    --color-primary-200: #d2d7f0;
+    --color-primary-300: #bbc2e9;
+    --color-primary-400: #8d99db;
+    --color-primary-500: #5e6ad2;
+    --color-primary-600: #4c56ab;
+    --color-primary-700: #38407e;
+    --color-primary-800: #292f5d;
+    --color-primary-900: #1a1e3b;
+
+    --color-neutral-50: #fafafa;
+    --color-neutral-100: #f4f4f5;
+    --color-neutral-200: #e4e4e7;
+    --color-neutral-300: #d4d4d8;
+    --color-neutral-400: #a1a1aa;
+    --color-neutral-500: #71717a;
+    --color-neutral-600: #52525b;
+    --color-neutral-700: #3f3f46;
+    --color-neutral-800: #27272a;
+    --color-neutral-900: #18181b;
+    --color-neutral-950: #0e0f11;
+
+    /* Semantic Mappings */
+    --color-primary: var(--color-primary-500);
+    
+    --color-bg-light: var(--color-neutral-50);
+    --color-bg-dark: var(--color-neutral-950);
+    
+    --color-surface-light: #ffffff;
+    --color-surface-dark: #15171b;
+    
+    --color-border-light: var(--color-neutral-200);
+    --color-border-dark: #2d2d2d;
+
+    --color-sidebar-dark: #0e0f11;
+    --color-menu-dark: #1a1a1a;
+    --color-menu-border: #333;
 
     /* Font Family */
-    --font-family-display: "Space Grotesk", sans-serif;
+    --font-family-display: "Inter", sans-serif;
 
-    /* Border Radius */
-    --radius: 0.25rem;
-    --radius-lg: 0.5rem;
-    --radius-xl: 0.75rem;
-    --radius-2xl: 1rem;
-    --radius-3xl: 1.5rem;
+    /* Advanced Shadows */
+    /* macOS Fluid Transitions */
+    --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
+    --duration-fluid: 400ms;
+    
+    /* Animation Tokens */
+    --animate-fade-in: fade-in 0.4s var(--ease-apple);
+    --animate-slide-up: slide-up 0.6s var(--ease-apple);
+    --animate-scale-in: scale-in 0.4s var(--ease-apple);
+    --animate-side-panel: side-panel 0.4s var(--ease-apple);
+
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes slide-up {
+        from { transform: translateY(16px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes scale-in {
+        from { transform: scale(0.96); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes side-panel {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+    }
 }
 
-/* Global Styles */
+/* --- Theme Transition & Global Styles --- */
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+/* 
+   Silky smooth theme switching. 
+   We ONLY transition color-related properties to avoid any layout 'jank' (jerking). 
+   Layout properties like width, height, padding, and transforms should NOT be transitioned globally.
+*/
+*, *::before, *::after {
+  border-color: var(--color-border-light); /* Default border color fallback */
+}
+
+.dark *, .dark *::before, .dark *::after {
+  border-color: var(--color-border-dark);
+}
+
 body {
-    font-family: "Space Grotesk", sans-serif;
+  font-family: var(--font-family-display);
+  @apply bg-bg-light dark:bg-bg-dark text-neutral-900 dark:text-neutral-300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global color-only transition for theme switching */
+body, 
+body :not(.no-transition) {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 400ms;
+  transition-timing-function: var(--ease-apple);
+  will-change: background-color, border-color, color;
 }
 
 /* Material Symbols Icon Fixes */
 .material-symbols-outlined {
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 24;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
     line-height: 1;
     vertical-align: middle;
 }
 
-/* Custom Classes */
-.glow-effect {
-    box-shadow: 0 0 20px rgba(0, 204, 170, 0.15);
-}
-
-.hero-gradient {
-    background: radial-gradient(circle at 50% 50%, rgba(0, 204, 170, 0.08) 0%, transparent 70%);
-}
-
-/* How It Works Page Styles */
-.timeline-gradient {
-    background: linear-gradient(180deg, #00ccaa 0%, rgba(0, 204, 170, 0.1) 100%);
-}
-
+/* Modern Glass & Border Effects */
 .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    @apply bg-white/70 dark:bg-white/[0.02] border border-white/20 dark:border-white/[0.05];
 }
 
-.fee-card-highlight {
-    border: 1px solid rgba(0, 204, 170, 0.3);
-    background: linear-gradient(145deg, rgba(0, 204, 170, 0.05) 0%, rgba(26, 29, 35, 0) 100%);
+.premium-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glow-border:hover {
-    border-color: rgba(0, 204, 170, 0.5);
-    box-shadow: 0 0 20px rgba(0, 204, 170, 0.1);
+.premium-card:hover {
+    @apply border-primary/40 -translate-y-[1px];
 }
 
-.step-number {
-    -webkit-text-stroke: 1px rgba(0, 204, 170, 0.3);
-    color: transparent;
+/* Input & Component Active Styles */
+input {
+    transition: border-color var(--duration-fluid) var(--ease-apple), box-shadow var(--duration-fluid) var(--ease-apple);
 }
 
-/* Trust & Safety Page Styles */
-.security-glow {
-    box-shadow: 0 0 20px rgba(0, 204, 170, 0.15);
+input:focus {
+    @apply ring-1 ring-primary/30 border-primary/40 !outline-none;
 }
 
-.bento-card {
-    transition: all 0.3s ease;
+/* Interaction Effects - Subtler & More Premium */
+button:active, 
+.cursor-pointer:active {
+    transform: scale(0.985);
 }
 
-.bento-card:hover {
-    border-color: #00ccaa;
-    background-color: rgba(0, 204, 170, 0.02);
+button, a, .cursor-pointer {
+    transition: transform 0.2s var(--ease-apple), background-color var(--duration-fluid) var(--ease-apple), color var(--duration-fluid) var(--ease-apple), border-color var(--duration-fluid) var(--ease-apple);
 }
 
-/* Exchange Status Page Styles */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+.grid-cell {
+  @apply border-r border-b border-border-light dark:border-border-dark px-3 py-2 text-[13px] align-middle;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+/* Fix redundant borders at edges */
+tr:last-child .grid-cell,
+tr:last-child th {
+  border-bottom-width: 0 !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #204b44;
-    border-radius: 10px;
+.grid-cell:last-child,
+th:last-child {
+  border-right-width: 0 !important;
 }
 
-.glow-active {
-    box-shadow: 0 0 15px rgba(0, 204, 170, 0.3);
+/* Hide Scrollbars globally but keep functionality */
+.custom-scrollbar::-webkit-scrollbar,
+.hide-scrollbar-x::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-/* Start Exchange Page Styles */
-.form-input:focus {
-    box-shadow: 0 0 0 2px rgba(0, 204, 170, 0.2);
+.custom-scrollbar,
+.hide-scrollbar-x,
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 
-/* Mediator Panel Styles */
-.halo-glow {
-    box-shadow: 0 0 15px rgba(0, 204, 170, 0.1);
+/* Standard utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
 }

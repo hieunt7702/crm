@@ -1,14 +1,11 @@
 {
+    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "target": "ESNext",
-        "module": "ESNext",
-        "moduleResolution": "Node",
+        "composite": true,
         "declaration": true,
-        "outDir": "dist",
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "baseUrl": "."
+        "emitDeclarationOnly": true,
+        "baseUrl": ".",
+        "rootDir": "."
     },
     "include": [
         "./**/*.ts",

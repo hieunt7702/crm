@@ -1,48 +1,24 @@
 {
+  "extends": "../../tsconfig.base.json", /* Kế thừa cấu hình chung từ root */
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "ES2022",
-    "useDefineForClassFields": true,
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "module": "ESNext",
-    "types": [
-      "vite/client"
-    ],
-    "skipLibCheck": true,
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "composite": true, /* Cho phép project này được tham chiếu hoặc tham chiếu đến project khác */
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo", /* File lưu trữ thông tin cache để tăng tốc build */
+    "baseUrl": ".", /* Gốc để giải quyết các path aliases bên dưới */
+    "paths": {
+      /* Các đường dẫn viết tắt (Path Aliases) giúp import code gọn hơn */
+      "@/*": ["./src/*"], /* @/components/Header -> apps/web/src/components/Header */
+      "@app/core": ["../../packages/core"], /* @app/core -> Trỏ thẳng vào thư mục package core */
+      "@app/core/*": ["../../packages/core/*"], /* Import các module con trong core */
+      "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@assets/*": ["./src/assets/*"]
+    },
+    "types": ["vite/client"], /* Hỗ trợ kiểu dữ liệu riêng của Vite (e.g. import.meta.env) */
+    "noEmit": true /* Ứng dụng web được build bởi Vite, nên TS chỉ dùng để check kiểu, không cần xuất file */
   },
-  "include": [
-    "src"
+  "references": [
+    { "path": "../../packages/core" } /* Tham chiếu đến package core (Project References) */
   ],
-  "paths": {
-    "core-api": [
-      "../../packages/core/api.ts"
-    ],
-    "core-model": [
-      "../../packages/core/model.ts"
-    ],
-    "core-store": [
-      "../../packages/core/store.ts"
-    ],
-    "core-context": [
-      "../../packages/core/context.ts"
-    ]
-  }
+  "include": ["src"] /* Chỉ kiểm tra kiểu cho các file trong thư mục src */
 }

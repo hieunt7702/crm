@@ -1,14 +1,16 @@
 {
-    "name": "@app/core",
+    "name": "@app/core", 
     "version": "1.0.0",
-    "type": "module",
+    "private": true,
+    "type": "module", 
+    "//exports": "Định nghĩa các điểm truy cập (mũi tên) để các app bên ngoài import vào",
     "exports": {
-        ".": "./index.ts",
-        "./api": "./api.ts",
-        "./model": "./model.ts",
-        "./service": "./service.ts",
-        "./store": "./store.ts",
-        "./context": "./context.ts",
-        "./utils": "./utils.ts"
+        ".": "./index.ts", 
+        "./api": "./api/index.ts", 
+        "./models": "./models/index.ts",
+        "./services": "./services/index.ts",
+        "./stores": "./stores/index.ts",
+        "./context": "./context/index.ts",
+        "./utils": "./utils/index.ts"
     }
 }

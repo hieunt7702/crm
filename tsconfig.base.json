@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ES2022", /* Phiên bản JavaScript output (vùng hỗ trợ cú pháp hiện đại) */
+        "useDefineForClassFields": true, /* Tuân thủ chuẩn ECMA cho các trường trong class */
+        "lib": [
+            "ES2022",
+            "DOM",
+            "DOM.Iterable"
+        ], /* Các thư viện định nghĩa kiểu có sẵn (trình duyệt, ES2022) */
+        "module": "ESNext", /* Hệ thống module output (sử dụng ES Modules) */
+        "skipLibCheck": true, /* Bỏ qua kiểm tra kiểu trong node_modules để build nhanh hơn */
+        /* Bundler mode - Tối ưu cho các công cụ đóng gói như Vite */
+        "moduleResolution": "bundler", /* Cách tìm module theo chuẩn hiện đại */
+        "allowImportingTsExtensions": true, /* Cho phép import file .ts có gắn đuôi (cần cho Vite) */
+        "resolveJsonModule": true, /* Cho phép import trực tiếp file .json */
+        "isolatedModules": true, /* Đảm bảo an toàn khi transpile từng file độc lập */
+        "jsx": "react-jsx", /* Sử dụng React JSX transform mới (không cần import React) */
+        /* Linting - Quy tắc kiểm tra code nghiêm ngặt */
+        "strict": true, /* Bật tất cả kiểm tra kiểu nghiêm ngặt */
+        "noUnusedLocals": true, /* Lỗi nếu có biến local không dùng */
+        "noUnusedParameters": true, /* Lỗi nếu có tham số hàm không dùng */
+        "noFallthroughCasesInSwitch": true /* Ngăn chặn chảy code qua các case trong switch mà thiếu break */
+    }
+}

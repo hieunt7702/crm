@@ -1,22 +1,43 @@
-// core/stores/user.store.ts
-import { makeAutoObservable } from "mobx"
-import { getProfile } from "../api/user.api"
-import { User } from "../models/user.model"
+import { RequestCanceler } from "api";
+import { makeAutoObservable, runInAction } from "mobx";
+import { UserModel } from "models";
+import { UserService } from "services";
 
 export class UserStore {
-    user: User | null = null
-    loading = false
+    users: UserModel[] = [];
+    loading = false;
+    error: string | null = null;
+
+    private canceler = new RequestCanceler();
 
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this);
     }
 
-    async fetchProfile() {
-        this.loading = true
+    fetchUsers = async () => {
+        this.loading = true;
+        this.error = null;
+
         try {
-            this.user = await getProfile()
+            const resAPI = await UserService.getUsers(this.canceler.signal);
+
+            runInAction(() => {
+                this.users = resAPI?.data;
+            });
+        } catch (err: any) {
+            if (err.name === "CanceledError") return;
+
+            runInAction(() => {
+                this.error = err.message || "Load users failed";
+            });
         } finally {
-            this.loading = false
+            runInAction(() => {
+                this.loading = false;
+            });
         }
+    };
+
+    cancelFetch() {
+        this.canceler.cancel();
     }
 }

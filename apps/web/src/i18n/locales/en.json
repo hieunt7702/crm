@@ -1,0 +1,72 @@
+{
+  "sidebar": {
+    "search": "Search",
+    "inbox": "Inbox",
+    "my_issues": "My issues",
+    "staff_list": "Staff List",
+    "user_master": "User Master",
+    "workspace": "Workspace",
+    "settings": "Settings"
+  },
+  "settings": {
+    "appearance": "Appearance",
+    "toggle_dark_mode": "Toggle Dark Mode",
+    "workspace_settings": "Workspace Settings",
+    "members": "Members",
+    "integrations": "Integrations",
+    "plans": "Plans",
+    "logout": "Log out"
+  },
+  "employees": {
+    "title": "Staff Members",
+    "subtitle": "Manage, monitor, and configure your team's workflow and performance data.",
+    "import": "Import",
+    "export": "Export",
+    "add_employee": "Add Employee",
+    "search_placeholder": "Search by name, role or department...",
+    "tabs": {
+      "active": "Active",
+      "on_leave": "On Leave",
+      "all": "All Employees",
+      "locked": "Locked",
+      "archived": "Archived",
+      "on_boarding": "On Boarding",
+      "interns": "Interns",
+      "remote": "Remote",
+      "office": "Office-based",
+      "contractors": "Contractors",
+      "probation": "Probation",
+      "management": "Management"
+    },
+    "filters": {
+      "label": "Filters",
+      "reset": "Reset",
+      "department": "Department",
+      "manager": "Manager"
+    },
+    "sort": "Sort"
+  },
+  "modal": {
+    "edit_title": "Edit Member Profile",
+    "create_title": "Create New Employee",
+    "subtitle": "Setup workspace access and core details.",
+    "profile_identity": "Profile Identity",
+    "basic_identity": "Basic Identity",
+    "full_name": "Full Identity Name",
+    "email": "Professional Email",
+    "work_assignment": "Work Assignment",
+    "designation": "Designation",
+    "select_role": "Select role",
+    "department": "Department",
+    "select_dept": "Select dept",
+    "contract_terms": "Contractual Terms",
+    "onboarding_date": "Onboarding Date",
+    "contract_classification": "Contract Classification",
+    "full_time": "Full-time",
+    "part_time": "Part-time",
+    "freelance": "Freelance",
+    "update_profile": "Update Profile",
+    "confirm_create": "Confirm & Create",
+    "cancel": "Cancel"
+  }
+}

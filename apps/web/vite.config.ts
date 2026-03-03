@@ -1,18 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from "path"
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
 export default defineConfig({
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [tailwindcss(), react(), tsconfigPaths()],
   resolve: {
     alias: {
-      "core-api": path.resolve(__dirname, "../../packages/core/api.ts"),
-      "core-model": path.resolve(__dirname, "../../packages/core/model.ts"),
-      "core-store": path.resolve(__dirname, "../../packages/core/store.ts"),
-      "core-context": path.resolve(__dirname, "../../packages/core/context.ts")
-    }
+      "@": path.resolve(__dirname, "./src"),
+      "@app/core": path.resolve(__dirname, "../../packages/core"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@layouts": path.resolve(__dirname, "./src/layouts"),
+      "@modules": path.resolve(__dirname, "./src/modules"),
+      "@assets": path.resolve(__dirname, "./src/assets")
+    },
+    dedupe: ["react", "react-dom"]
   }
-})
+});

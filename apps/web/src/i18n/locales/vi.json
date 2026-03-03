@@ -1,0 +1,72 @@
+{
+  "sidebar": {
+    "search": "Tìm kiếm",
+    "inbox": "Hộp thư",
+    "my_issues": "Vấn đề của tôi",
+    "staff_list": "Danh sách nhân viên",
+    "user_master": "Quản lý người dùng",
+    "workspace": "Không gian làm việc",
+    "settings": "Cài đặt"
+  },
+  "settings": {
+    "appearance": "Giao diện",
+    "toggle_dark_mode": "Chế độ tối",
+    "workspace_settings": "Cài đặt không gian",
+    "members": "Thành viên",
+    "integrations": "Tích hợp",
+    "plans": "Gói dịch vụ",
+    "logout": "Đăng xuất"
+  },
+  "employees": {
+    "title": "Danh sách nhân viên",
+    "subtitle": "Quản lý, giám sát và cấu hình quy trình làm việc cũng như dữ liệu hiệu suất của nhóm bạn.",
+    "import": "Nhập file",
+    "export": "Xuất file",
+    "add_employee": "Thêm nhân viên",
+    "search_placeholder": "Tìm theo tên, vai trò hoặc phòng ban...",
+    "tabs": {
+      "active": "Đang làm việc",
+      "on_leave": "Đang nghỉ phép",
+      "all": "Tất cả nhân viên",
+      "locked": "Đã khóa",
+      "archived": "Đã lưu trữ",
+      "on_boarding": "Đang thử việc",
+      "interns": "Thực tập sinh",
+      "remote": "Làm từ xa",
+      "office": "Tại văn phòng",
+      "contractors": "Cộng tác viên",
+      "probation": "Thử thách",
+      "management": "Quản lý"
+    },
+    "filters": {
+      "label": "Bộ lọc",
+      "reset": "Đặt lại",
+      "department": "Phòng ban",
+      "manager": "Người quản lý"
+    },
+    "sort": "Sắp xếp"
+  },
+  "modal": {
+    "edit_title": "Chỉnh sửa hồ sơ thành viên",
+    "create_title": "Tạo nhân viên mới",
+    "subtitle": "Thiết lập quyền truy cập không gian làm việc và các chi tiết cốt lõi.",
+    "profile_identity": "Danh tính hồ sơ",
+    "basic_identity": "Thông tin cơ bản",
+    "full_name": "Họ và tên đầy đủ",
+    "email": "Email công việc",
+    "work_assignment": "Phân công công việc",
+    "designation": "Chức danh",
+    "select_role": "Chọn vai trò",
+    "department": "Phòng ban",
+    "select_dept": "Chọn phòng ban",
+    "contract_terms": "Điều khoản hợp đồng",
+    "onboarding_date": "Ngày nhận việc",
+    "contract_classification": "Phân loại hợp đồng",
+    "full_time": "Toàn thời gian",
+    "part_time": "Bán thời gian",
+    "freelance": "Tự do",
+    "update_profile": "Cập nhật hồ sơ",
+    "confirm_create": "Xác nhận & Tạo",
+    "cancel": "Hủy"
+  }
+}
