@@ -19,7 +19,7 @@ export function initHttpClient(config: AppConfig) {
     (http.defaults as any).__axiosInstance = http;
 
     // Request
-    http.interceptors.request.use((req) => {
+    http.interceptors.request.use((req: any) => {
         const token = TokenManager.getAccessToken();
         if (token) {
             req.headers.Authorization = `Bearer ${token}`;
@@ -31,11 +31,11 @@ export function initHttpClient(config: AppConfig) {
 
     // Response
     http.interceptors.response.use(
-        (res) => {
+        (res: any) => {
             logResponse(res, config.apiDebug);
             return res.data;
         },
-        async (error) => {
+        async (error: any) => {
             const original = error.config;
 
             if (error.response?.status === 401 && !original._retry) {
@@ -51,8 +51,8 @@ export function initHttpClient(config: AppConfig) {
 
     // Retry
     http.interceptors.response.use(
-        (res) => res,
-        retryInterceptor(3, 1500)
+        (res: any) => res,
+        retryInterceptor(3, 1500) as any
     );
 }
 
