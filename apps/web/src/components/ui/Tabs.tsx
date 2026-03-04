@@ -186,45 +186,49 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onChange, className
     return (
         <div
             ref={outerRef}
-            className={`relative min-w-0 w-full flex items-center gap-1 p-1 bg-neutral-50 dark:bg-white/[0.02] rounded-lg border border-border-light dark:border-white/5 h-[38px] ${className}`}
+            className={`relative min-w-0 w-full ${className}`}
         >
-            <div className="flex items-center gap-1 min-w-0">
-                {visibleTabs.map((tab) => (
-                    <TabButton
-                        key={tab.id}
-                        tab={tab}
-                        isActive={activeTab === tab.id}
-                        onClick={() => onChange(tab.id)}
-                    />
-                ))}
+            <div className="inline-flex max-w-full items-center gap-1 p-1 bg-neutral-50 dark:bg-white/[0.02] rounded-lg border border-border-light dark:border-white/5 h-[38px]">
+                <div className="flex items-center gap-1 min-w-0 overflow-hidden">
+                    {visibleTabs.map((tab) => (
+                        <TabButton
+                            key={tab.id}
+                            tab={tab}
+                            isActive={activeTab === tab.id}
+                            onClick={() => onChange(tab.id)}
+                        />
+                    ))}
+                </div>
 
                 {overflowTabs.length > 0 && (
-                    <Dropdown
-                        position="bottom-right"
-                        trigger={({ isOpen }) => (
-                            <button
-                                type="button"
-                                className={`
-                            flex items-center gap-1 px-3 py-1.5 text-[12px] font-bold rounded-lg transition-all shrink-0
-                            ${isOpen || overflowTabs.some(t => t.id === activeTab)
-                                ? 'text-primary bg-primary/[0.04]'
-                                : 'text-neutral-500 hover:text-primary'}
-                        `}
-                            >
-                                <span>More</span>
-                                <span className={`material-symbols-outlined !text-[18px] transition-transform ${isOpen ? 'rotate-180' : ''}`}>expand_more</span>
-                            </button>
-                        )}
-                        sections={[{
-                            items: overflowTabs.map(tab => ({
-                                id: tab.id,
-                                label: tab.label,
-                                icon: tab.icon,
-                                onClick: () => onChange(tab.id),
-                                isActive: activeTab === tab.id
-                            }))
-                        }]}
-                    />
+                    <div className="shrink-0">
+                        <Dropdown
+                            position="bottom-right"
+                            trigger={({ isOpen }) => (
+                                <button
+                                    type="button"
+                                    className={`
+                                flex items-center gap-1 px-3 py-1.5 text-[12px] font-bold rounded-lg transition-all shrink-0
+                                ${isOpen || overflowTabs.some(t => t.id === activeTab)
+                                    ? 'text-primary bg-primary/[0.04]'
+                                    : 'text-neutral-500 hover:text-primary'}
+                            `}
+                                >
+                                    <span>More</span>
+                                    <span className={`material-symbols-outlined !text-[18px] transition-transform ${isOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                                </button>
+                            )}
+                            sections={[{
+                                items: overflowTabs.map(tab => ({
+                                    id: tab.id,
+                                    label: tab.label,
+                                    icon: tab.icon,
+                                    onClick: () => onChange(tab.id),
+                                    isActive: activeTab === tab.id
+                                }))
+                            }]}
+                        />
+                    </div>
                 )}
             </div>
 

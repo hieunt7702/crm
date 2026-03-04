@@ -99,6 +99,8 @@ export const EmployeeListHeader: React.FC<EmployeeListHeaderProps> = ({
           <Dropdown
             position="bottom-left"
             closeOnSelect={false}
+            searchable
+            searchPlaceholder="Search department..."
             trigger={({ isOpen }) => (
               <FilterChip
                 label={t('employees.filters.department')}
@@ -122,6 +124,8 @@ export const EmployeeListHeader: React.FC<EmployeeListHeaderProps> = ({
           <Dropdown
             position="bottom-left"
             closeOnSelect={false}
+            searchable
+            searchPlaceholder="Search manager..."
             trigger={({ isOpen }) => (
               <FilterChip
                 label={t('employees.filters.manager')}
