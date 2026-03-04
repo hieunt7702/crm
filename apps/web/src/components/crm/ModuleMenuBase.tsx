@@ -41,9 +41,7 @@ export const ModuleMenuBase: React.FC<ModuleMenuBaseProps> = ({
             onChange={(event) => onSearch(event.target.value)}
           />
         </div>
-
         <div className="h-4 w-[1px] bg-border-light dark:bg-border-dark mx-1 hidden sm:block shrink-0" />
-
         <div className="flex-1 min-w-0">
           <Tabs
             tabs={tabs}
