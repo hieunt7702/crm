@@ -17,15 +17,15 @@ export const Button: React.FC<ButtonProps> = ({
     className = '',
     ...props
 }) => {
-    const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none';
+    const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none';
 
     const variants = {
-        primary: 'bg-primary text-white hover:bg-primary-600 shadow-sm shadow-primary/20',
+        primary: 'bg-primary text-white hover:bg-primary-600 transition-all',
         secondary: 'bg-neutral-100 dark:bg-white/[0.05] text-neutral-900 dark:text-white hover:bg-neutral-200 dark:hover:bg-white/[0.08]',
         outline: `
       border transition-all duration-300
       ${isActive
-                ? 'border-primary-600 text-primary bg-primary/[0.04] shadow-sm shadow-primary/5'
+                ? 'border-primary-600 text-primary bg-primary/[0.04]'
                 : 'border-transparent text-neutral-600 dark:text-neutral-400 hover:text-primary hover:bg-primary/[0.02]'}
     `,
         ghost: `
@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
                 ? 'text-primary border-primary-600 bg-primary/[0.06] dark:bg-primary/20'
                 : 'text-neutral-500 dark:text-neutral-400 border-transparent hover:text-primary hover:bg-primary/[0.02]'}
     `,
-        danger: 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white',
+        danger: 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg',
     };
 
     const sizes = {

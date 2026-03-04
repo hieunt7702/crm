@@ -1,6 +1,7 @@
 import { useStore } from "@app/core/context";
 import { observer } from "mobx-react-lite";
 import { Navigate, Outlet } from "react-router-dom";
+import { LayoutProvider } from "../context/LayoutContext";
 import { MainLayout } from "../layouts/MainLayout/MainLayout";
 
 export const AuthGuard = observer(() => {
@@ -11,9 +12,11 @@ export const AuthGuard = observer(() => {
     }
 
     return (
-        <MainLayout>
-            <Outlet />
-        </MainLayout>
+        <LayoutProvider>
+            <MainLayout>
+                <Outlet />
+            </MainLayout>
+        </LayoutProvider>
     );
 });
 

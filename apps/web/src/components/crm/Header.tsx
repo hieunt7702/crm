@@ -1,7 +1,18 @@
 import React from 'react';
 import { Dropdown, DropdownSection } from '../ui/Dropdown';
 
-export const Header: React.FC = () => {
+export interface BreadcrumbItem {
+  label: string;
+  icon?: string;
+  path?: string;
+  isActive?: boolean;
+}
+
+interface HeaderProps {
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+export const Header: React.FC<HeaderProps> = ({ breadcrumbs }) => {
   const BRANCH_SESSIONS: DropdownSection[] = [
     {
       items: [
@@ -37,24 +48,38 @@ export const Header: React.FC = () => {
 
   return (
     <header className="h-12 border-b border-border-light dark:border-border-dark flex items-center justify-between px-8 bg-surface-light dark:bg-surface-dark shrink-0 relative">
-      {/* Premium Breadcrumbs */}
-      <div className="flex items-center gap-2">
-        <nav className="flex items-center gap-1.5" aria-label="Breadcrumb">
-          <button className="flex items-center justify-center size-7 rounded-md hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors text-neutral-400 hover:text-primary active:scale-95">
-            <span className="material-symbols-outlined !text-[18px]">home</span>
+      {/* Premium Breadcrumbs - Icon + Label Style */}
+      <div className="flex items-center">
+        <nav className="flex items-center gap-1" aria-label="Breadcrumb">
+          <button className="flex items-center justify-center size-8 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 transition-all text-neutral-400 hover:text-primary active:scale-95 group">
+            <span className="material-symbols-outlined !text-[18px] transition-transform group-hover:scale-110">home</span>
           </button>
 
-          <span className="text-neutral-300 dark:text-neutral-700 font-light select-none">/</span>
+          <span className="material-symbols-outlined !text-[14px] text-neutral-300 dark:text-neutral-700 select-none">chevron_right</span>
 
-          <button className="px-2.5 py-1 rounded-md text-[12px] font-bold text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5 transition-all active:scale-95 tracking-tight">
-            Employees
-          </button>
+          {breadcrumbs ? (
+            breadcrumbs.map((item, idx) => (
+              <React.Fragment key={idx}>
+                {idx > 0 && <span className="material-symbols-outlined !text-[14px] text-neutral-300 dark:text-neutral-700 select-none">chevron_right</span>}
 
-          <span className="text-neutral-300 dark:text-neutral-700 font-light select-none">/</span>
-
-          <div className="px-2.5 py-1 rounded-md bg-primary/[0.03] border border-primary/10 text-[12px] font-bold text-primary dark:text-primary-400 tracking-tight shadow-sm">
-            Staff List
-          </div>
+                {item.isActive ? (
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/[0.06] dark:bg-primary/10 border border-primary/10 ring-4 ring-primary/[0.02] select-none">
+                    {item.icon && <span className="material-symbols-outlined !text-[16px] text-primary dark:text-primary-400">{item.icon}</span>}
+                    <span className="text-[12px] font-black text-primary dark:text-primary-400 tracking-tight uppercase">{item.label}</span>
+                  </div>
+                ) : (
+                  <button className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-white/5 transition-all active:scale-95 group">
+                    {item.icon && <span className="material-symbols-outlined !text-[16px] opacity-70 group-hover:text-primary transition-colors">{item.icon}</span>}
+                    <span className="text-[12px] font-bold tracking-tight">{item.label}</span>
+                  </button>
+                )}
+              </React.Fragment>
+            ))
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-50 dark:bg-white/[0.01] border border-border-light dark:border-white/5 text-neutral-400 select-none">
+              <span className="text-[11px] font-bold uppercase tracking-widest">Dashboard</span>
+            </div>
+          )}
         </nav>
       </div>
 
@@ -69,7 +94,7 @@ export const Header: React.FC = () => {
               <div className={`
                 flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg cursor-pointer transition-all border
                 ${isOpen
-                  ? 'bg-primary/5 border-primary/30 text-primary shadow-sm'
+                  ? 'bg-primary/5 border-primary/30 text-primary'
                   : 'bg-neutral-50 dark:bg-white/[0.02] hover:bg-neutral-100 dark:hover:bg-white/5 border-border-light dark:border-white/5 text-neutral-600 dark:text-neutral-300'}
                 active:scale-[0.985]
               `}>

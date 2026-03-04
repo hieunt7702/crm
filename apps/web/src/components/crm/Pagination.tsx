@@ -32,7 +32,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   const endIdx = Math.min(currentPage * pageSize, totalItems);
 
   return (
-    <div className="shrink-0 px-8 py-4 border-t border-border-light dark:border-border-dark bg-white dark:bg-bg-dark/10 flex items-center justify-between">
+    <div className="shrink-0 px-8 py-4 bg-white dark:bg-bg-dark/10 flex items-center justify-between">
       {/* Left Section: Page Size & Info */}
       <div className="flex items-center gap-10">
         <Dropdown
@@ -42,7 +42,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             <div className={`
               flex items-center gap-2.5 px-3 h-8 rounded-md border transition-all cursor-pointer group
               ${isOpen
-                ? 'border-primary-600 text-primary bg-primary/[0.04] shadow-sm shadow-primary/5'
+                ? 'border-primary-600 text-primary bg-primary/[0.04] shadow-primary/5'
                 : 'bg-transparent border-transparent text-neutral-500 dark:text-neutral-400 hover:border-primary/30 hover:text-primary hover:bg-primary/[0.01]'}
             `}>
               <span className="text-[12px] font-bold">Show {pageSize}</span>

@@ -18,6 +18,7 @@ const TOP_MENU: MenuItem[] = [
 
 const MODULE_MENU: MenuItem[] = [
   { id: 'employees', icon: 'group', labelKey: 'sidebar.staff_list', path: '/employees' },
+  { id: 'products', icon: 'inventory_2', labelKey: 'sidebar.products', path: '/products' },
   { id: 'users', icon: 'person', labelKey: 'sidebar.user_master', path: '/user' },
 ];
 
@@ -96,7 +97,7 @@ export const Sidebar: React.FC = () => {
       {/* Logo Section */}
       <div className="p-4 flex items-center h-14 overflow-hidden">
         <div className="flex items-center gap-3 shrink-0">
-          <div className="size-6 bg-primary rounded flex items-center justify-center text-white text-[10px] font-bold shrink-0">L</div>
+          <div className="size-6 bg-primary rounded-lg flex items-center justify-center text-white text-[10px] font-bold shrink-0">L</div>
           <div className={`transition-all duration-300 flex items-center overflow-hidden ${isCollapsed ? 'w-0 opacity-0' : 'w-40 opacity-100'}`}>
             <span className="text-[13px] font-bold tracking-tight text-neutral-900 dark:text-neutral-200 whitespace-nowrap">
               Linear CRM
@@ -129,13 +130,13 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       {/* Bottom Settings Trigger */}
-      <div className="px-3 py-4 border-t border-border-light dark:border-border-dark mt-auto">
+      <div className="px-3 py-4 mt-auto">
         <Dropdown
           position="top-left"
           sections={SETTINGS_DROPDOWN}
           trigger={({ isOpen }) => (
             <div className={`
-              flex items-center gap-3 px-2 py-2 rounded-md transition-all duration-200 h-10 cursor-pointer
+              flex items-center gap-3 px-2 py-2 rounded-lg transition-all duration-200 h-10 cursor-pointer
               ${isOpen
                 ? 'bg-primary/10 text-primary dark:text-primary-400'
                 : 'text-neutral-600 dark:text-neutral-400 hover:text-primary hover:bg-primary/[0.03]'}
@@ -167,7 +168,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isCollapsed }) => {
     <NavLink
       to={item.path}
       className={({ isActive }) => `
-        flex items-center gap-3 px-2 py-2 text-[13px] rounded-md transition-all duration-200 h-10 overflow-hidden
+        flex items-center gap-3 px-2 py-2 text-[13px] rounded-lg transition-all duration-200 h-10 overflow-hidden
         ${isActive
           ? 'text-primary dark:text-primary-300 font-semibold bg-primary/10'
           : 'text-neutral-600 dark:text-neutral-400 hover:text-primary hover:bg-primary/[0.03]'}

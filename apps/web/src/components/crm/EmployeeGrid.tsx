@@ -33,7 +33,7 @@ export const EmployeeGrid: React.FC<EmployeeGridProps> = ({
           <table className="w-full border-separate border-spacing-0 table-fixed min-w-[1200px]">
             <thead>
               <tr>
-                <th className="sticky top-0 z-20 border-r border-b border-border-light dark:border-white/5 px-4 py-3.5 bg-neutral-50 dark:bg-neutral-900 w-12 text-center">
+                <th className="sticky top-0 z-20 border-r border-b border-neutral-300 dark:border-white/20 px-4 py-3.5 bg-neutral-50 dark:bg-neutral-900 w-12 text-center transition-colors bg-clip-padding">
                   <input className="rounded border-neutral-300 dark:border-neutral-700 bg-transparent text-primary focus:ring-primary/20 size-3.5 transition-all" type="checkbox" />
                 </th>
 
@@ -104,7 +104,7 @@ export const EmployeeGrid: React.FC<EmployeeGridProps> = ({
                   align="left"
                 />
 
-                <th className="sticky top-0 z-20 border-b border-border-light dark:border-white/5 px-4 py-3.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-500 bg-neutral-50 dark:bg-neutral-900 w-24 text-center">
+                <th className="sticky top-0 z-20 border-b border-neutral-300 dark:border-white/20 px-4 py-3.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-500 bg-neutral-50 dark:bg-neutral-900 w-24 text-center transition-colors bg-clip-padding">
                   ACTIONS
                 </th>
               </tr>
@@ -163,10 +163,10 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
     <th
       onClick={() => onClick(field)}
       className={`
-        sticky top-0 z-20 border-r border-b border-border-light dark:border-white/5 px-4 py-3.5 
+        sticky top-0 z-20 border-r border-b border-neutral-300 dark:border-white/20 px-4 py-3.5 
         text-[11px] font-semibold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 
         bg-neutral-50 dark:bg-neutral-900 transition-all cursor-pointer select-none
-        hover:bg-neutral-100 dark:hover:bg-white/5 group
+        hover:bg-neutral-100 dark:hover:bg-white/5 group bg-clip-padding
         ${className}
       `}
     >

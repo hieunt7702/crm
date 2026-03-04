@@ -1,56 +1,49 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EmployeeGrid } from '../../components/crm/EmployeeGrid';
 import { EmployeeListHeader } from '../../components/crm/EmployeeListHeader';
 import { EmployeeModal } from '../../components/crm/EmployeeModal';
 import { Pagination } from '../../components/crm/Pagination';
+import { Button } from '../../components/ui/Button';
+import { ModulePageLayout } from '../../layouts/CRM/ModulePageLayout';
 import { Employee, EmployeeService } from '../../services/employee.service';
-
-interface TabPagination {
-  page: number;
-  totalPages: number;
-  totalItems: number;
-}
+import { EMPLOYEE_TAB_IDS } from './employeeTabs.base';
+import {
+  createTabPaginationMap,
+  ensureTabPaginationState,
+  TabPaginationState,
+} from '../shared/tabPagination.base';
 
 export const EmployeeScreen: React.FC = () => {
+  const { t } = useTranslation();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentTab, setCurrentTab] = useState('active');
+  const [currentTab, setCurrentTab] = useState(EMPLOYEE_TAB_IDS[0] ?? 'active');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [pageSize, setPageSize] = useState(10);
   const [sortBy, setSortBy] = useState<string>('id');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [filterOptions, setFilterOptions] = useState<Record<string, string[]>>({});
+  const [isFilterBarOpen, setIsFilterBarOpen] = useState(false);
 
-  // Pagination state preserved per tab
-  const [paginationMap, setPaginationMap] = useState<Record<string, TabPagination>>({
-    active: { page: 1, totalPages: 1, totalItems: 0 },
-    'on-leave': { page: 1, totalPages: 1, totalItems: 0 },
-    all: { page: 1, totalPages: 1, totalItems: 0 },
-    locked: { page: 1, totalPages: 1, totalItems: 0 },
-    archived: { page: 1, totalPages: 1, totalItems: 0 },
-    'on-boarding': { page: 1, totalPages: 1, totalItems: 0 },
-    interns: { page: 1, totalPages: 1, totalItems: 0 },
-    remote: { page: 1, totalPages: 1, totalItems: 0 },
-    office: { page: 1, totalPages: 1, totalItems: 0 },
-    contractors: { page: 1, totalPages: 1, totalItems: 0 },
-    probation: { page: 1, totalPages: 1, totalItems: 0 },
-    management: { page: 1, totalPages: 1, totalItems: 0 },
-  });
+  const [paginationMap, setPaginationMap] = useState<Record<string, TabPaginationState>>(() =>
+    createTabPaginationMap(EMPLOYEE_TAB_IDS),
+  );
+  const currentPage = paginationMap[currentTab]?.page ?? 1;
 
   const fetchEmployees = useCallback(async () => {
     setIsLoading(true);
     try {
-      const currentPage = paginationMap[currentTab]?.page || 1;
       const response = await EmployeeService.getEmployees({
         search: searchQuery,
         status: currentTab,
         page: currentPage,
-        pageSize: pageSize,
-        sortBy: sortBy,
-        sortOrder: sortOrder,
-        filters: filterOptions
+        pageSize,
+        sortBy,
+        sortOrder,
+        filters: filterOptions,
       });
 
       setEmployees(response.data);
@@ -59,36 +52,37 @@ export const EmployeeScreen: React.FC = () => {
         [currentTab]: {
           page: currentPage,
           totalPages: response.totalPages,
-          totalItems: response.total
-        }
+          totalItems: response.total,
+        },
       }));
     } catch (error) {
       console.error('Failed to fetch employees:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [searchQuery, currentTab, pageSize, paginationMap[currentTab]?.page, sortBy, sortOrder, filterOptions]);
+  }, [currentPage, currentTab, filterOptions, pageSize, searchQuery, sortBy, sortOrder]);
 
   useEffect(() => {
     fetchEmployees();
-  }, [searchQuery, currentTab, pageSize, paginationMap[currentTab]?.page, sortBy, sortOrder, filterOptions]);
+  }, [fetchEmployees]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setPaginationMap(prev => ({
       ...prev,
-      [currentTab]: { ...prev[currentTab], page: 1 }
+      [currentTab]: { ...prev[currentTab], page: 1 },
     }));
   };
 
   const handleTabChange = (tab: string) => {
     setCurrentTab(tab);
+    setPaginationMap(prev => ensureTabPaginationState(prev, tab));
   };
 
   const handlePageChange = (page: number) => {
     setPaginationMap(prev => ({
       ...prev,
-      [currentTab]: { ...prev[currentTab], page }
+      [currentTab]: { ...prev[currentTab], page },
     }));
   };
 
@@ -102,7 +96,7 @@ export const EmployeeScreen: React.FC = () => {
     // Reset page to 1 on sort
     setPaginationMap(prev => ({
       ...prev,
-      [currentTab]: { ...prev[currentTab], page: 1 }
+      [currentTab]: { ...prev[currentTab], page: 1 },
     }));
   };
 
@@ -115,13 +109,13 @@ export const EmployeeScreen: React.FC = () => {
 
       return {
         ...prev,
-        [field]: nextValues
+        [field]: nextValues,
       };
     });
     // Reset to page 1 on filter
     setPaginationMap(prev => ({
       ...prev,
-      [currentTab]: { ...prev[currentTab], page: 1 }
+      [currentTab]: { ...prev[currentTab], page: 1 },
     }));
   };
 
@@ -129,8 +123,12 @@ export const EmployeeScreen: React.FC = () => {
     setFilterOptions({});
     setPaginationMap(prev => ({
       ...prev,
-      [currentTab]: { ...prev[currentTab], page: 1 }
+      [currentTab]: { ...prev[currentTab], page: 1 },
     }));
+  };
+
+  const handleToggleFilterBar = () => {
+    setIsFilterBarOpen(prev => !prev);
   };
 
   const handlePageSizeChange = (size: number) => {
@@ -168,20 +166,69 @@ export const EmployeeScreen: React.FC = () => {
     }
   };
 
-  const currentPagination = paginationMap[currentTab] || { page: 1, totalPages: 1, totalItems: 0 };
+  const currentPagination = paginationMap[currentTab] ?? { page: 1, totalPages: 1, totalItems: 0 };
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 bg-surface-light dark:bg-surface-dark overflow-hidden">
-      <EmployeeListHeader
-        onSearch={handleSearch}
-        currentTab={currentTab}
-        onTabChange={handleTabChange}
-        onAdd={handleAdd}
-        filters={filterOptions}
-        onFilterChange={handleMultiFilterChange}
-        onClearFilters={handleClearFilters}
-      />
-
+    <ModulePageLayout
+      title={t('employees.title')}
+      subtitle={t('employees.subtitle')}
+      breadcrumbs={[
+        { label: 'Employees', icon: 'group' },
+        { label: 'Staff List', icon: 'format_list_bulleted', isActive: true }
+      ]}
+      actions={
+        <>
+          <Button icon="file_upload">{t('employees.import')}</Button>
+          <Button icon="file_download">{t('employees.export')}</Button>
+          <Button
+            variant="primary"
+            icon="person_add"
+            onClick={handleAdd}
+            className="px-5"
+          >
+            {t('employees.add_employee')}
+          </Button>
+        </>
+      }
+      toolbar={
+        <EmployeeListHeader
+          onSearch={handleSearch}
+          currentTab={currentTab}
+          onTabChange={handleTabChange}
+          onAdd={handleAdd}
+          filters={filterOptions}
+          onFilterChange={handleMultiFilterChange}
+          onClearFilters={handleClearFilters}
+          isFilterBarOpen={isFilterBarOpen}
+          onToggleFilterBar={handleToggleFilterBar}
+          renderType="toolbar"
+        />
+      }
+      filterBar={
+        <EmployeeListHeader
+          onSearch={handleSearch}
+          currentTab={currentTab}
+          onTabChange={handleTabChange}
+          onAdd={handleAdd}
+          filters={filterOptions}
+          onFilterChange={handleMultiFilterChange}
+          onClearFilters={handleClearFilters}
+          isFilterBarOpen={isFilterBarOpen}
+          onToggleFilterBar={handleToggleFilterBar}
+          renderType="filter"
+        />
+      }
+      pagination={
+        <Pagination
+          currentPage={currentPagination.page}
+          totalPages={currentPagination.totalPages}
+          totalItems={currentPagination.totalItems}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      }
+    >
       <EmployeeGrid
         employees={employees}
         isLoading={isLoading}
@@ -192,21 +239,12 @@ export const EmployeeScreen: React.FC = () => {
         onDelete={handleDelete}
       />
 
-      <Pagination
-        currentPage={currentPagination.page}
-        totalPages={currentPagination.totalPages}
-        totalItems={currentPagination.totalItems}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
-
       <EmployeeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
         editingEmployee={editingEmployee}
       />
-    </div>
+    </ModulePageLayout>
   );
 };
