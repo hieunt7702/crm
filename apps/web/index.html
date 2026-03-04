@@ -1,18 +1,37 @@
 <!doctype html>
-<html class="dark" lang="en">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EscrowSecure | Trusted Middleman Service</title>
+  <script>
+    (function () {
+      try {
+        var storageKey = 'app-theme';
+        var storedTheme = window.localStorage.getItem(storageKey);
+        var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = storedTheme === 'light' || storedTheme === 'dark'
+          ? storedTheme
+          : (systemPrefersDark ? 'dark' : 'light');
+
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {
+        var fallbackDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', !!fallbackDark);
+        document.documentElement.setAttribute('data-theme', fallbackDark ? 'dark' : 'light');
+      }
+    })();
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
 </head>
 
-<body class="bg-bg-light dark:bg-bg-dark text-neutral-900 dark:text-neutral-300 antialiased selection:bg-primary/20 transition-colors duration-200">
+<body class="bg-bg-light dark:bg-bg-dark text-neutral-900 dark:text-neutral-300 antialiased selection:bg-primary/20">
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

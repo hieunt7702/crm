@@ -34,39 +34,61 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   const positionClasses = {
     'top-left': 'bottom-full left-0 mb-2 origin-bottom-left',
     'top-right': 'bottom-full right-0 mb-2 origin-bottom-right',
     'bottom-left': 'top-full left-0 mt-2 origin-top-left',
-    'bottom-right': 'top-full right-0 mt-2 origin-top-right',
+    'bottom-right': 'top-full right-0 mt-2 origin-top-right'
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen((prev) => !prev);
   };
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
-      <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
+      <div onClick={toggleDropdown} className="cursor-pointer">
         {typeof trigger === 'function' ? trigger({ isOpen }) : trigger}
       </div>
 
-      <div className={`
-        absolute z-[100] w-52 py-1.5
-        bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl
-        border border-white/20 dark:border-white/10 
-        rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)]
-        transition-all duration-300 cubic-bezier(0.25, 1, 0.5, 1)
-        ${isOpen
-          ? 'opacity-100 scale-100 translate-y-0 visible'
-          : 'opacity-0 scale-95 translate-y-2 pointer-events-none invisible'}
-        ${positionClasses[position]}
-      `}>
+      <div
+        className={`
+          absolute z-[100] w-52 py-1.5
+          bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl
+          border border-white/20 dark:border-white/10
+          rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)]
+          will-change-transform
+          transition-[opacity,transform] duration-200 ease-[var(--ease-apple)]
+          ${isOpen
+            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 scale-[0.98] translate-y-1 pointer-events-none'}
+          ${positionClasses[position]}
+        `}
+      >
         {sections.map((section, sIdx) => (
           <React.Fragment key={sIdx}>
             {section.label && (
@@ -78,10 +100,12 @@ export const Dropdown: React.FC<DropdownProps> = ({
               {section.items.map((item) => (
                 <div
                   key={item.id}
-                  onClick={(e) => {
-                    e.stopPropagation();
+                  onClick={(event) => {
+                    event.stopPropagation();
                     item.onClick?.();
-                    if (closeOnSelect) setIsOpen(false);
+                    if (closeOnSelect) {
+                      setIsOpen(false);
+                    }
                   }}
                   className={`
                     flex items-center gap-2 px-3 py-1.5 text-[12px] transition-colors cursor-pointer
@@ -105,4 +129,3 @@ export const Dropdown: React.FC<DropdownProps> = ({
     </div>
   );
 };
-

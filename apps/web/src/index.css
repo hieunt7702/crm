@@ -50,7 +50,9 @@
     /* Advanced Shadows */
     /* macOS Fluid Transitions */
     --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
-    --duration-fluid: 400ms;
+    --duration-fluid: 320ms;
+    --duration-snappy: 200ms;
+    --duration-theme: 280ms;
     
     /* Animation Tokens */
     --animate-fade-in: fade-in 0.4s var(--ease-apple);
@@ -103,15 +105,16 @@ body {
   @apply bg-bg-light dark:bg-bg-dark text-neutral-900 dark:text-neutral-300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--duration-theme) var(--ease-apple), color var(--duration-theme) var(--ease-apple);
 }
 
-/* Global color-only transition for theme switching */
-body, 
-body :not(.no-transition) {
+/* Only animate theme transition during an actual theme switch */
+:root.theme-transition *,
+:root.theme-transition *::before,
+:root.theme-transition *::after {
   transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 400ms;
+  transition-duration: var(--duration-theme);
   transition-timing-function: var(--ease-apple);
-  will-change: background-color, border-color, color;
 }
 
 /* Material Symbols Icon Fixes */
@@ -127,7 +130,7 @@ body :not(.no-transition) {
 }
 
 .premium-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--duration-snappy) var(--ease-apple), border-color var(--duration-snappy) var(--ease-apple), box-shadow var(--duration-snappy) var(--ease-apple);
 }
 
 .premium-card:hover {
@@ -150,7 +153,27 @@ button:active,
 }
 
 button, a, .cursor-pointer {
-    transition: transform 0.2s var(--ease-apple), background-color var(--duration-fluid) var(--ease-apple), color var(--duration-fluid) var(--ease-apple), border-color var(--duration-fluid) var(--ease-apple);
+    transition-property: transform, background-color, color, border-color, opacity;
+    transition-duration: var(--duration-snappy);
+    transition-timing-function: var(--ease-apple);
+}
+
+.sidebar-reveal {
+  transition-property: opacity, transform;
+  transition-duration: var(--duration-snappy);
+  transition-timing-function: var(--ease-apple);
+}
+
+.sidebar-reveal-expanded {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sidebar-reveal-collapsed {
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+  user-select: none;
 }
 
 .grid-cell {

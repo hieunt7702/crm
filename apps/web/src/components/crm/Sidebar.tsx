@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
 import { Dropdown, DropdownSection } from '../ui/Dropdown';
 
 interface MenuItem {
@@ -13,24 +14,28 @@ interface MenuItem {
 const TOP_MENU: MenuItem[] = [
   { id: 'search', icon: 'search', labelKey: 'sidebar.search', path: '/search' },
   { id: 'inbox', icon: 'inbox', labelKey: 'sidebar.inbox', path: '/inbox' },
-  { id: 'my-issues', icon: 'task_alt', labelKey: 'sidebar.my_issues', path: '/tasks/mine' },
+  { id: 'my-issues', icon: 'task_alt', labelKey: 'sidebar.my_issues', path: '/tasks/mine' }
 ];
 
 const MODULE_MENU: MenuItem[] = [
   { id: 'employees', icon: 'group', labelKey: 'sidebar.staff_list', path: '/employees' },
   { id: 'products', icon: 'inventory_2', labelKey: 'sidebar.products', path: '/products' },
-  { id: 'users', icon: 'person', labelKey: 'sidebar.user_master', path: '/user' },
+  { id: 'users', icon: 'person', labelKey: 'sidebar.user_master', path: '/user' }
 ];
+
+const getRevealClass = (isCollapsed: boolean) =>
+  `sidebar-reveal ${isCollapsed ? 'sidebar-reveal-collapsed' : 'sidebar-reveal-expanded'}`;
 
 export const Sidebar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { t, i18n } = useTranslation();
+  const { isDark, toggleTheme } = useTheme();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
 
-  const SETTINGS_DROPDOWN: DropdownSection[] = [
+  const settingsDropdown: DropdownSection[] = [
     {
       label: t('settings.appearance'),
       items: [
@@ -38,17 +43,18 @@ export const Sidebar: React.FC = () => {
           id: 'dark-mode',
           label: t('settings.toggle_dark_mode'),
           icon: 'contrast',
-          onClick: () => document.documentElement.classList.toggle('dark')
+          isActive: isDark,
+          onClick: toggleTheme
         }
       ],
       hasDivider: true
     },
     {
-      label: 'Language / Ngôn ngữ',
+      label: 'Language',
       items: [
         {
           id: 'lang-vi',
-          label: 'Tiếng Việt',
+          label: 'Tieng Viet',
           icon: 'language',
           isActive: i18n.language === 'vi',
           onClick: () => changeLanguage('vi')
@@ -68,7 +74,7 @@ export const Sidebar: React.FC = () => {
       items: [
         { id: 'ws-settings', label: t('settings.workspace_settings'), icon: 'workspaces', isActive: true },
         { id: 'members', label: t('settings.members'), icon: 'group' },
-        { id: 'integrations', label: t('settings.integrations'), icon: 'bolt' },
+        { id: 'integrations', label: t('settings.integrations'), icon: 'bolt' }
       ],
       hasDivider: true
     },
@@ -82,23 +88,22 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside
-      className={`relative h-screen flex flex-col shrink-0 bg-bg-light dark:bg-sidebar-dark border-r border-border-light dark:border-border-dark transition-[width] duration-[450ms] cubic-bezier(0.25, 1, 0.5, 1) group/sidebar ${isCollapsed ? 'w-16' : 'w-64'}`}
+      className={`relative h-screen flex flex-col shrink-0 bg-bg-light dark:bg-sidebar-dark border-r border-border-light dark:border-border-dark transition-[width,background-color,border-color] duration-[360ms] ease-[var(--ease-apple)] group/sidebar ${isCollapsed ? 'w-16' : 'w-64'}`}
     >
-      {/* Toggle button - floating at the end of sidebar */}
-      <div
-        className="absolute -right-3 top-5 size-6 bg-surface-light dark:bg-neutral-800 border border-border-light dark:border-white/10 rounded-full flex items-center justify-center cursor-pointer shadow-sm z-50 opacity-0 group-hover/sidebar:opacity-100 transition-all hover:border-primary/50 hover:text-primary active:scale-90"
-        onClick={() => setIsCollapsed(!isCollapsed)}
+      <button
+        type="button"
+        className="absolute -right-3 top-5 size-6 bg-surface-light dark:bg-neutral-800 border border-border-light dark:border-white/10 rounded-full flex items-center justify-center cursor-pointer shadow-sm z-50 opacity-0 group-hover/sidebar:opacity-100 transition-[opacity,transform,color,border-color,background-color] duration-200 ease-[var(--ease-apple)] hover:border-primary/50 hover:text-primary active:scale-90"
+        onClick={() => setIsCollapsed((prev) => !prev)}
       >
-        <span className={`material-symbols-outlined !text-[16px] transition-transform duration-300 ${!isCollapsed ? 'rotate-180' : ''}`}>
+        <span className={`material-symbols-outlined !text-[16px] transition-transform duration-300 ease-[var(--ease-apple)] ${!isCollapsed ? 'rotate-180' : ''}`}>
           chevron_right
         </span>
-      </div>
+      </button>
 
-      {/* Logo Section */}
       <div className="p-4 flex items-center h-14 overflow-hidden">
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0 min-w-0">
           <div className="size-6 bg-primary rounded-lg flex items-center justify-center text-white text-[10px] font-bold shrink-0">L</div>
-          <div className={`transition-all duration-300 flex items-center overflow-hidden ${isCollapsed ? 'w-0 opacity-0' : 'w-40 opacity-100'}`}>
+          <div className={`min-w-0 overflow-hidden ${getRevealClass(isCollapsed)}`}>
             <span className="text-[13px] font-bold tracking-tight text-neutral-900 dark:text-neutral-200 whitespace-nowrap">
               Linear CRM
             </span>
@@ -106,7 +111,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Navigation */}
       <nav className="flex-1 px-3 space-y-1 pt-2 overflow-y-auto no-scrollbar overflow-x-hidden">
         <div className="space-y-0.5">
           {TOP_MENU.map((item) => (
@@ -115,9 +119,9 @@ export const Sidebar: React.FC = () => {
         </div>
 
         <div className="pt-6">
-          <div className={`flex items-center gap-3 px-2 py-1.5 min-h-[32px] overflow-hidden`}>
+          <div className="flex items-center gap-3 px-2 py-1.5 min-h-[32px] overflow-hidden">
             <span className="material-symbols-outlined !text-[18px] text-neutral-400 w-6 flex justify-center shrink-0">badge</span>
-            <div className={`transition-all duration-300 overflow-hidden ${isCollapsed ? 'w-0 opacity-0' : 'w-40 opacity-100'}`}>
+            <div className={`min-w-0 overflow-hidden ${getRevealClass(isCollapsed)}`}>
               <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 whitespace-nowrap">{t('sidebar.workspace')}</span>
             </div>
           </div>
@@ -129,21 +133,23 @@ export const Sidebar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Bottom Settings Trigger */}
       <div className="px-3 py-4 mt-auto">
         <Dropdown
           position="top-left"
-          sections={SETTINGS_DROPDOWN}
+          sections={settingsDropdown}
           trigger={({ isOpen }) => (
-            <div className={`
-              flex items-center gap-3 px-2 py-2 rounded-lg transition-all duration-200 h-10 cursor-pointer
-              ${isOpen
-                ? 'bg-primary/10 text-primary dark:text-primary-400'
-                : 'text-neutral-600 dark:text-neutral-400 hover:text-primary hover:bg-primary/[0.03]'}
-              active:scale-[0.985]
-            `}>
+            <div
+              className={`
+                flex items-center gap-3 px-2 py-2 rounded-lg h-10 cursor-pointer
+                transition-[background-color,color,border-color,transform] duration-200 ease-[var(--ease-apple)]
+                ${isOpen
+                  ? 'bg-primary/10 text-primary dark:text-primary-400'
+                  : 'text-neutral-600 dark:text-neutral-400 hover:text-primary hover:bg-primary/[0.03]'}
+                active:scale-[0.985]
+              `}
+            >
               <span className="material-symbols-outlined !text-[20px] w-6 flex justify-center shrink-0">settings</span>
-              <div className={`transition-all duration-300 overflow-hidden ${isCollapsed ? 'w-0 opacity-0' : 'w-40 opacity-100'}`}>
+              <div className={`min-w-0 overflow-hidden ${getRevealClass(isCollapsed)}`}>
                 <span className="text-[13px] whitespace-nowrap font-semibold">{t('sidebar.settings')}</span>
               </div>
             </div>
@@ -153,8 +159,6 @@ export const Sidebar: React.FC = () => {
     </aside>
   );
 };
-
-
 
 interface SidebarItemProps {
   item: MenuItem;
@@ -168,22 +172,20 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ item, isCollapsed }) => {
     <NavLink
       to={item.path}
       className={({ isActive }) => `
-        flex items-center gap-3 px-2 py-2 text-[13px] rounded-lg transition-all duration-200 h-10 overflow-hidden
+        flex items-center gap-3 px-2 py-2 text-[13px] rounded-lg h-10 overflow-hidden
+        transition-[background-color,color,transform] duration-200 ease-[var(--ease-apple)]
         ${isActive
           ? 'text-primary dark:text-primary-300 font-semibold bg-primary/10'
           : 'text-neutral-600 dark:text-neutral-400 hover:text-primary hover:bg-primary/[0.03]'}
         active:scale-[0.97]
       `}
     >
-      <span className="material-symbols-outlined !text-[20px] w-6 flex justify-center shrink-0 transition-all duration-300">
+      <span className="material-symbols-outlined !text-[20px] w-6 flex justify-center shrink-0">
         {item.icon}
       </span>
-      <div className={`transition-all duration-300 ease-in-out flex items-center overflow-hidden ${isCollapsed ? 'w-0 opacity-0' : 'w-40 opacity-100'}`}>
+      <div className={`min-w-0 overflow-hidden ${getRevealClass(isCollapsed)}`}>
         <span className="truncate whitespace-nowrap">{t(item.labelKey)}</span>
       </div>
     </NavLink>
   );
 };
-
-
-
