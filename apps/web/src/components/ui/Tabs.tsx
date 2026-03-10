@@ -188,7 +188,7 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onChange, className
             ref={outerRef}
             className={`relative min-w-0 w-full ${className}`}
         >
-            <div className="inline-flex max-w-full items-center gap-1 p-1 bg-neutral-50 dark:bg-white/[0.02] rounded-lg border border-border-light dark:border-white/5 h-[38px]">
+            <div className="inline-flex max-w-full items-center gap-1 p-1 bg-white dark:bg-white/[0.02] rounded-lg border border-border-light dark:border-white/5 h-[38px]">
                 <div className="flex items-center gap-1 min-w-0 overflow-hidden">
                     {visibleTabs.map((tab) => (
                         <TabButton
@@ -210,8 +210,8 @@ export const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onChange, className
                                     className={`
                                 flex items-center gap-1 px-3 py-1.5 text-[12px] font-bold rounded-lg transition-all shrink-0
                                 ${isOpen || overflowTabs.some(t => t.id === activeTab)
-                                    ? 'text-primary bg-primary/[0.04]'
-                                    : 'text-neutral-500 hover:text-primary'}
+                                            ? 'text-primary bg-primary/[0.04]'
+                                            : 'text-neutral-500 hover:text-primary'}
                             `}
                                 >
                                     <span>More</span>

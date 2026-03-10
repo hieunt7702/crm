@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Employee } from '../../services/employee.service';
 import { Button } from '../ui/Button';
@@ -50,7 +51,7 @@ export const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose, o
         return () => window.removeEventListener('keydown', handleEsc);
     }, []);
 
-    if (!isOpen) return null;
+    if (!isOpen || typeof document === 'undefined') return null;
 
     const contractTypes = [
         { id: 'Full-time', label: t('modal.full_time') },
@@ -58,8 +59,8 @@ export const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose, o
         { id: 'Freelance', label: t('modal.freelance') },
     ] as const;
 
-    return (
-        <div className="fixed inset-0 z-[200] flex justify-end">
+    const modalContent = (
+        <div className="fixed inset-0 z-[999] flex justify-end">
             {/* Backdrop with sophisticated blur */}
             <div
                 className="absolute inset-0 bg-black/20 dark:bg-black/60 backdrop-blur-[4px] animate-fade-in transition-all"
@@ -267,4 +268,6 @@ export const EmployeeModal: React.FC<EmployeeModalProps> = ({ isOpen, onClose, o
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 };

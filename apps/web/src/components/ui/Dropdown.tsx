@@ -170,7 +170,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       ref={menuRef}
       style={{ top: menuPosition.top, left: menuPosition.left }}
       className={`
-        fixed z-[140] py-1.5 ${menuWidthClassName}
+        fixed z-[9999] py-1.5 ${menuWidthClassName}
         bg-white dark:bg-neutral-900
         border border-border-light dark:border-white/10
         rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.32)]

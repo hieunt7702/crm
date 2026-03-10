@@ -251,7 +251,7 @@ export const BaseListView = <T extends object>({
             relative z-40
           `}
         >
-          <div className="p-1.5 bg-neutral-50 dark:bg-white/[0.02] border border-border-light dark:border-white/5 rounded-xl shadow-[0_12px_30px_-24px_rgba(24,24,27,0.55)] flex flex-wrap items-center gap-2">
+          <div className=" bg-white dark:bg-white/[0.02] flex flex-wrap items-center gap-2">
             {filterContent}
           </div>
         </div>

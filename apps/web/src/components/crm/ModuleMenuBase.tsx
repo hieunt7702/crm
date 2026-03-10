@@ -35,7 +35,7 @@ export const ModuleMenuBase: React.FC<ModuleMenuBaseProps> = ({
           </span>
           <input
             {...searchProps}
-            className="w-full h-[38px] bg-neutral-50 dark:bg-white/[0.02] border border-border-light dark:border-white/5 rounded-lg pl-10 pr-4 text-[13px] placeholder:text-neutral-500 text-neutral-900 dark:text-neutral-200 transition-all focus:bg-white dark:focus:bg-black/20 focus:border-primary/40 focus:outline-none"
+            className="w-full h-[38px] bg-white dark:bg-white/[0.02] border border-border-light dark:border-white/5 rounded-lg pl-10 pr-4 text-[13px] placeholder:text-neutral-500 text-neutral-900 dark:text-neutral-200 transition-all focus:bg-white dark:focus:bg-black/20 focus:border-primary/40 focus:outline-none"
             placeholder={searchPlaceholder}
             type="text"
             onChange={(event) => onSearch(event.target.value)}
