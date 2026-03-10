@@ -34,7 +34,7 @@ export const ModulePageLayout: React.FC<ModulePageLayoutProps> = ({
     return (
         <div className="flex-1 flex flex-col min-h-0 bg-surface-light dark:bg-surface-dark overflow-hidden">
             {/* Header Section */}
-            <div className="shrink-0 flex flex-col pt-10 px-8 pb-4 animate-fade-in group/header">
+            <div className="shrink-0 relative z-30 flex flex-col pt-10 px-8 pb-4 animate-fade-in group/header">
                 {/* Title & Actions Row */}
                 <div className="flex flex-row items-end justify-between mb-8">
                     <div className="flex flex-col gap-1.5">
@@ -61,14 +61,14 @@ export const ModulePageLayout: React.FC<ModulePageLayoutProps> = ({
 
                 {/* Filter Bar Row */}
                 {filterBar && (
-                    <div className="mt-4 animate-slide-up">
+                    <div className="w-full">
                         {filterBar}
                     </div>
                 )}
             </div>
 
             {/* Content Section (Grid/Table) */}
-            <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+            <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative z-0">
                 {children}
             </div>
 

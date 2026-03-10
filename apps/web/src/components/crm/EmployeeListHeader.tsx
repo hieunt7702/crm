@@ -15,6 +15,8 @@ interface EmployeeListHeaderProps {
   onClearFilters: () => void;
   isFilterBarOpen: boolean;
   onToggleFilterBar: () => void;
+  viewMode: 'table' | 'grid';
+  onViewModeChange: (mode: 'table' | 'grid') => void;
   renderType?: 'header' | 'toolbar' | 'filter' | 'all';
 }
 
@@ -28,6 +30,8 @@ export const EmployeeListHeader: React.FC<EmployeeListHeaderProps> = ({
   onClearFilters,
   isFilterBarOpen,
   onToggleFilterBar,
+  viewMode,
+  onViewModeChange,
   renderType = 'all'
 }) => {
   const { t } = useTranslation();
@@ -86,75 +90,123 @@ export const EmployeeListHeader: React.FC<EmployeeListHeaderProps> = ({
 
               <div className="h-4 w-[1px] bg-border-light dark:bg-border-dark mx-1 hidden sm:block"></div>
 
-              <Button variant="ghost" size="icon" icon="view_column" />
+              <Dropdown
+                position="bottom-right"
+                sections={[{
+                  items: [
+                    {
+                      id: 'table',
+                      label: 'Table view',
+                      icon: 'table_rows',
+                      isActive: viewMode === 'table',
+                      onClick: () => onViewModeChange('table')
+                    },
+                    {
+                      id: 'grid',
+                      label: 'Grid view',
+                      icon: 'grid_view',
+                      isActive: viewMode === 'grid',
+                      onClick: () => onViewModeChange('grid')
+                    }
+                  ]
+                }]}
+                trigger={({ isOpen }) => (
+                  <Button
+                    variant="ghost"
+                    isActive={isOpen}
+                    icon={viewMode === 'grid' ? 'grid_view' : 'table_rows'}
+                    className="px-3"
+                  >
+                    <span className="text-[12px] font-semibold hidden md:inline">
+                      {viewMode === 'grid' ? 'Grid' : 'Table'}
+                    </span>
+                    <span
+                      className={`material-symbols-outlined !text-[16px] opacity-60 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    >
+                      expand_more
+                    </span>
+                  </Button>
+                )}
+              />
             </>
           }
         />
       )}
 
       {/* Dynamic Filter Bar */}
-      {showFilter && isFilterBarOpen && (
-        <div className="mt-4 p-1 bg-neutral-50 dark:bg-white/[0.01] border border-border-light dark:border-white/5 rounded-lg flex flex-wrap items-center gap-2 animate-slide-up">
-          {/* Department Filter */}
-          <Dropdown
-            position="bottom-left"
-            closeOnSelect={false}
-            searchable
-            searchPlaceholder="Search department..."
-            trigger={({ isOpen }) => (
-              <FilterChip
-                label={t('employees.filters.department')}
-                values={filters.department || []}
-                icon="corporate_fare"
-                isOpen={isOpen}
-                onClear={() => filters.department?.forEach(v => onFilterChange('department', v))}
-              />
-            )}
-            sections={[{
-              items: ['Engineering', 'Design', 'Product', 'HR', 'Marketing', 'Sales'].map(dept => ({
-                id: dept,
-                label: dept,
-                onClick: () => onFilterChange('department', dept),
-                isActive: filters.department?.includes(dept)
-              }))
-            }]}
-          />
+      {showFilter && (
+        <div
+          aria-hidden={!isFilterBarOpen}
+          className={`
+            transition-[max-height,opacity,transform,margin] duration-[420ms] ease-[var(--ease-apple)]
+            ${isFilterBarOpen
+              ? 'mt-2 max-h-[520px] opacity-100 translate-y-0 overflow-visible'
+              : 'mt-0 max-h-0 opacity-0 -translate-y-1 pointer-events-none overflow-hidden'}
+            relative z-40
+          `}
+        >
+          <div className="p-1.5 bg-neutral-50 dark:bg-white/[0.02] border border-border-light dark:border-white/5 rounded-xl shadow-[0_12px_30px_-24px_rgba(24,24,27,0.55)] flex flex-wrap items-center gap-2">
+            {/* Department Filter */}
+            <Dropdown
+              position="bottom-left"
+              closeOnSelect={false}
+              searchable
+              searchPlaceholder="Search department..."
+              trigger={({ isOpen }) => (
+                <FilterChip
+                  label={t('employees.filters.department')}
+                  values={filters.department || []}
+                  icon="corporate_fare"
+                  isOpen={isOpen}
+                  onClear={() => filters.department?.forEach(v => onFilterChange('department', v))}
+                />
+              )}
+              sections={[{
+                items: ['Engineering', 'Design', 'Product', 'HR', 'Marketing', 'Sales'].map(dept => ({
+                  id: dept,
+                  label: dept,
+                  onClick: () => onFilterChange('department', dept),
+                  isActive: filters.department?.includes(dept)
+                }))
+              }]}
+            />
 
-          {/* Manager Filter */}
-          <Dropdown
-            position="bottom-left"
-            closeOnSelect={false}
-            searchable
-            searchPlaceholder="Search manager..."
-            trigger={({ isOpen }) => (
-              <FilterChip
-                label={t('employees.filters.manager')}
-                values={filters.manager || []}
-                icon="person"
-                isOpen={isOpen}
-                onClear={() => filters.manager?.forEach(v => onFilterChange('manager', v))}
-              />
-            )}
-            sections={[{
-              items: ['Michael Chen', 'Alex Rivera', 'Sarah Jenkins', 'David Miller', 'Emma Wilson'].map(mgr => ({
-                id: mgr,
-                label: mgr,
-                icon: 'person',
-                onClick: () => onFilterChange('manager', mgr),
-                isActive: filters.manager?.includes(mgr)
-              }))
-            }]}
-          />
+            {/* Manager Filter */}
+            <Dropdown
+              position="bottom-left"
+              closeOnSelect={false}
+              searchable
+              searchPlaceholder="Search manager..."
+              trigger={({ isOpen }) => (
+                <FilterChip
+                  label={t('employees.filters.manager')}
+                  values={filters.manager || []}
+                  icon="person"
+                  isOpen={isOpen}
+                  onClear={() => filters.manager?.forEach(v => onFilterChange('manager', v))}
+                />
+              )}
+              sections={[{
+                items: ['Michael Chen', 'Alex Rivera', 'Sarah Jenkins', 'David Miller', 'Emma Wilson'].map(mgr => ({
+                  id: mgr,
+                  label: mgr,
+                  icon: 'person',
+                  onClick: () => onFilterChange('manager', mgr),
+                  isActive: filters.manager?.includes(mgr)
+                }))
+              }]}
+            />
 
-          {activeFiltersCount > 0 && (
-            <button
-              onClick={onClearFilters}
-              className="px-3 h-8 text-[11px] font-bold text-neutral-400 hover:text-red-500 transition-all uppercase tracking-widest flex items-center gap-1.5 hover:bg-white dark:hover:bg-white/5 rounded-lg active:scale-95"
-            >
-              <span className="material-symbols-outlined !text-[16px]">filter_alt_off</span>
-              <span>{t('employees.filters.reset')}</span>
-            </button>
-          )}
+            {activeFiltersCount > 0 && (
+              <button
+                onClick={onClearFilters}
+                className="px-3 h-8 text-[11px] font-bold text-neutral-400 hover:text-red-500 transition-all uppercase tracking-widest flex items-center gap-1.5 hover:bg-white dark:hover:bg-white/5 rounded-lg active:scale-95"
+              >
+                <span className="material-symbols-outlined !text-[16px]">filter_alt_off</span>
+                <span>{t('employees.filters.reset')}</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
     </>
