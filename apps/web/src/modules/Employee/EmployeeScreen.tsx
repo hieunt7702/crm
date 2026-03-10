@@ -70,11 +70,16 @@ export const EmployeeScreen: React.FC = observer(() => {
         </div>
       ),
       renderCardValue: (employee) => (
-        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest ${employee.status === 'active' ? 'bg-emerald-500/10 text-emerald-500' :
-          employee.status === 'locked' ? 'bg-red-500/10 text-red-500' : 'bg-neutral-500/10 text-neutral-500'
-          }`}>
-          {employee.status}
-        </span>
+        <div className="flex items-center gap-1.5">
+          <div className={`size-1.5 rounded-full ${employee.status === 'active' ? 'bg-emerald-500' :
+            employee.status === 'locked' ? 'bg-red-500' : 'bg-neutral-400'
+            }`} />
+          <span className={`text-[10px] font-bold uppercase tracking-[0.05em] ${employee.status === 'active' ? 'text-emerald-600 dark:text-emerald-400' :
+            employee.status === 'locked' ? 'text-red-600 dark:text-red-400' : 'text-neutral-500'
+            }`}>
+            {employee.status}
+          </span>
+        </div>
       ),
     },
     {

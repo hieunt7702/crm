@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { ModulePageLayout } from '../../layouts/CRM/ModulePageLayout';
-import { BreadcrumbItem } from './Header';
-import { ModuleMenuBase } from './ModuleMenuBase';
 import { Button } from '../ui/Button';
 import { Dropdown } from '../ui/Dropdown';
 import { TabItem } from '../ui/Tabs';
+import { BreadcrumbItem } from './Header';
+import { ModuleMenuBase } from './ModuleMenuBase';
 
 type ViewMode = 'table' | 'grid';
 type Align = 'left' | 'center' | 'right';
@@ -348,8 +348,8 @@ export const BaseListView = <T extends object>({
             ) : null
           ) : (
             hasData ? (
-              <div className="h-fit max-h-full overflow-auto custom-scrollbar">
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+              <div className="h-fit max-h-full overflow-auto custom-scrollbar pt-6 pb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-8 px-2">
                   {data.map((item, index) => {
                     const titleContent = cardTitle ? cardTitle(item) : formatDefaultValue(resolveValue(item, fields[0]?.key));
                     const subtitleContent = cardSubtitle ? cardSubtitle(item) : (fields[1] ? formatDefaultValue(resolveValue(item, fields[1].key)) : null);
@@ -357,43 +357,92 @@ export const BaseListView = <T extends object>({
                     return (
                       <article
                         key={`card-${getRowKey(item, index)}`}
-                        className="group rounded-xl border border-border-light dark:border-white/10 bg-white/60 dark:bg-white/[0.03] p-4 shadow-sm hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30 transition-all animate-fade-in"
-                        style={{ animationDelay: `${index * 0.04}s`, animationFillMode: 'both' }}
+                        className="group relative flex flex-col rounded-[32px] bg-white dark:bg-neutral-900 border border-white/0 dark:border-white/[0.04] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.2)] hover:shadow-[0_32px_64px_rgba(0,0,0,0.08)] transition-shadow duration-300 animate-slide-up hover:-translate-y-2 overflow-hidden"
+                        style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
                       >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <p className="text-[14px] font-semibold text-neutral-900 dark:text-neutral-100 truncate">
-                              {titleContent}
-                            </p>
-                            {subtitleContent && (
-                              <div className="text-[11px] text-neutral-500 mt-1 truncate">
-                                {subtitleContent}
+                        <div className="relative p-7 flex flex-col h-full z-10 w-full">
+                          {/* Header Section */}
+                          <div className="flex items-start justify-between mb-8">
+                            <div className="flex items-center gap-5 min-w-0">
+                              <div className="relative">
+                                {/* Simple Icon without overly complex glow */}
+                                <div className="relative size-14 rounded-[22px] bg-neutral-50 dark:bg-white/[0.03] shadow-[0_10px_20px_-10px_rgba(0,0,0,0.1)] dark:shadow-none flex items-center justify-center group-hover:rotate-[8deg] transition-all duration-500">
+                                  <div className="size-10 rounded-[16px] bg-primary/10 flex items-center justify-center overflow-hidden">
+                                    <span className="material-symbols-outlined !text-[26px] text-primary group-hover:scale-110 transition-transform duration-500">
+                                      {emptyStateIcon === 'person_search' ? 'person' : emptyStateIcon}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="min-w-0">
+                                <h3 className="text-[17px] font-black text-neutral-900 dark:text-neutral-50 truncate tracking-tight group-hover:text-primary transition-colors duration-300">
+                                  {titleContent}
+                                </h3>
+                                {subtitleContent && (
+                                  <div className="mt-1 flex items-center gap-2">
+                                    <span className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[.15em] opacity-80">
+                                      {subtitleContent}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {hasRowActions && (
+                              <div className="flex items-center opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 transition-all duration-500 delay-75">
+                                <div className="flex items-center bg-white/90 dark:bg-neutral-800/90 rounded-2xl shadow-xl shadow-black/10 p-1.5 border border-border-light dark:border-white/10">
+                                  {onRowActions?.(item)}
+                                </div>
                               </div>
                             )}
                           </div>
-                          {hasRowActions && (
-                            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              {onRowActions?.(item)}
+
+                          {/* Stats Section */}
+                          <div className="space-y-6 flex-1">
+                            <div className="grid grid-cols-2 gap-4">
+                              {cardFields.slice(0, 4).map((field) => {
+                                const rawValue = resolveValue(item, field.key);
+                                const cardValue = field.renderCardValue ? field.renderCardValue(item) : formatDefaultValue(rawValue);
+
+                                return (
+                                  <div
+                                    key={`card-field-${getRowKey(item, index)}-${String(field.key)}`}
+                                    className="flex flex-col gap-1.5"
+                                  >
+                                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-600">
+                                      {field.cardLabel ?? field.label}
+                                    </p>
+                                    <div className="text-[14px] font-bold text-neutral-700 dark:text-neutral-200 truncate group-hover:text-neutral-900 dark:group-hover:text-white transition-colors">
+                                      {cardValue}
+                                    </div>
+                                  </div>
+                                );
+                              })}
                             </div>
-                          )}
-                        </div>
+                          </div>
 
-                        <div className="mt-4 grid grid-cols-2 gap-2 text-[12px]">
-                          {cardFields.map((field) => {
-                            const rawValue = resolveValue(item, field.key);
-                            const cardValue = field.renderCardValue ? field.renderCardValue(item) : formatDefaultValue(rawValue);
-
-                            return (
-                              <div key={`card-field-${getRowKey(item, index)}-${String(field.key)}`} className="rounded-lg bg-neutral-100/70 dark:bg-white/[0.03] px-2.5 py-2">
-                                <p className="text-[10px] uppercase tracking-widest text-neutral-400">
-                                  {field.cardLabel ?? field.label}
-                                </p>
-                                <div className="mt-1 text-neutral-700 dark:text-neutral-200 truncate">
-                                  {cardValue}
+                          {/* Footer / High-End Progress */}
+                          {fields.length > 6 && !fields[6].hideInCard && (
+                            <div className="mt-8 pt-8 relative border-t border-border-light/60 dark:border-white/[0.04]">
+                              <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-[0.2em] text-neutral-400 dark:text-neutral-500 mb-4">
+                                <span className="flex items-center gap-2">
+                                  <span className="size-2 rounded-full bg-primary/60 shadow-[0_0_8px_rgba(94,106,210,0.4)]" />
+                                  {fields[6].label}
+                                </span>
+                                <span className="text-primary text-[13px] tracking-tighter tabular-nums">{String(resolveValue(item, fields[6].key))}%</span>
+                              </div>
+                              <div className="h-2.5 bg-neutral-100 dark:bg-white/[0.03] rounded-full overflow-hidden shadow-inner">
+                                <div className="h-full relative overflow-hidden rounded-full border border-border-light/50 dark:border-white/10">
+                                  <div
+                                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary-400 to-primary-600 shadow-[2px_0_12px_rgba(94,106,210,0.3)] transition-all duration-1500 ease-[var(--ease-apple)] rounded-full"
+                                    style={{ width: `${resolveValue(item, fields[6].key)}%` }}
+                                  >
+                                    <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.15)_50%,rgba(255,255,255,0.15)_75%,transparent_75%,transparent)] bg-[length:1.25rem_1.25rem] animate-[move-stripe_2s_linear_infinite]" />
+                                  </div>
                                 </div>
                               </div>
-                            );
-                          })}
+                            </div>
+                          )}
                         </div>
                       </article>
                     );
@@ -404,18 +453,29 @@ export const BaseListView = <T extends object>({
               <EmptyState text={emptyStateText} icon={emptyStateIcon} />
             ) : null
           )}
-        </div>
-      </div>
+        </div >
+      </div >
       {children}
-    </ModulePageLayout>
+    </ModulePageLayout >
   );
 };
 
 const EmptyState: React.FC<{ text: string; icon: string }> = ({ text, icon }) => (
-  <div className="min-h-[360px] border border-dashed border-neutral-300 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-white/[0.01] flex items-center justify-center">
-    <div className="flex flex-col items-center gap-4 text-neutral-400">
-      <span className="material-symbols-outlined !text-[64px] opacity-20">{icon}</span>
-      <p className="text-[14px] font-medium">{text}</p>
+  <div className="min-h-[400px] flex flex-col items-center justify-center p-8 text-center animate-fade-in">
+    <div className="relative mb-6">
+      <div className="absolute inset-0 bg-primary/20 blur-[40px] rounded-full scale-150 opacity-20" />
+      <div className="relative size-20 rounded-2xl bg-neutral-50 dark:bg-white/[0.03] border border-neutral-200 dark:border-white/10 flex items-center justify-center shadow-xl">
+        <span className="material-symbols-outlined !text-[40px] text-neutral-300 dark:text-neutral-600">
+          {icon}
+        </span>
+      </div>
+      <div className="absolute -bottom-2 -right-2 size-8 rounded-full bg-white dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 flex items-center justify-center shadow-lg">
+        <span className="material-symbols-outlined !text-[16px] text-primary">search</span>
+      </div>
     </div>
+    <h3 className="text-lg font-bold text-neutral-900 dark:text-neutral-100 mb-2 truncate max-w-xs">{text}</h3>
+    <p className="text-[13px] text-neutral-500 dark:text-neutral-500 max-w-[240px] leading-relaxed">
+      Try adjusting your search or filters to find what you're looking for.
+    </p>
   </div>
 );

@@ -76,6 +76,10 @@
         from { transform: translateX(100%); }
         to { transform: translateX(0); }
     }
+    @keyframes move-stripe {
+        from { background-position: 1rem 0; }
+        to { background-position: 0 0; }
+    }
 }
 
 /* --- Theme Transition & Global Styles --- */
@@ -105,16 +109,25 @@ body {
   @apply bg-bg-light dark:bg-bg-dark text-neutral-900 dark:text-neutral-300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color var(--duration-theme) var(--ease-apple), color var(--duration-theme) var(--ease-apple);
 }
 
-/* Only animate theme transition during an actual theme switch */
-:root.theme-transition *,
-:root.theme-transition *::before,
-:root.theme-transition *::after {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: var(--duration-theme);
-  transition-timing-function: var(--ease-apple);
+/* View Transitions Overrides for Discord-like Theme Switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+.dark::view-transition-old(root) {
+  z-index: 2;
+}
+.dark::view-transition-new(root) {
+  z-index: 1;
 }
 
 /* Material Symbols Icon Fixes */
